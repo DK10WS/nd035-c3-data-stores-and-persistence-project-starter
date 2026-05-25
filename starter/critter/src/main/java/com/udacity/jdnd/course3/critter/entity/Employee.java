@@ -3,6 +3,9 @@ package com.udacity.jdnd.course3.critter.entity;
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
 import java.time.DayOfWeek;
 import java.util.Set;
 
@@ -11,10 +14,12 @@ public class Employee extends Base {
 
     private String name;
 
-    @ElementCollection
+    @ElementCollection(targetClass = EmployeeSkill.class)
+    @Enumerated(EnumType.STRING)
     private Set<EmployeeSkill> skills;
 
-    @ElementCollection
+    @ElementCollection(targetClass = DayOfWeek.class)
+    @Enumerated(EnumType.STRING)
     private Set<DayOfWeek> Available;
 
     public String getName() {

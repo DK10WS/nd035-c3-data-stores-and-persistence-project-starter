@@ -11,14 +11,25 @@ import java.util.Set;
 public class Schedule extends Base {
 
     @ManyToMany
+    @JoinTable(
+            name = "schedule_employee",
+            joinColumns = @JoinColumn(name = "schedule_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id")
+    )
     private List<Employee> employees;
 
     @ManyToMany
+    @JoinTable(
+            name = "schedule_pet",
+            joinColumns = @JoinColumn(name = "schedule_id"),
+            inverseJoinColumns = @JoinColumn(name = "pet_id")
+    )
     private List<Pet> pets;
 
     private LocalDate date;
 
-    @ElementCollection
+    @ElementCollection(targetClass = EmployeeSkill.class)
+    @Enumerated(EnumType.STRING)
     private Set<EmployeeSkill> activities;
 
     public List<Employee> getEmployees() {
