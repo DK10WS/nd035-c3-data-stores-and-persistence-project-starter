@@ -12,8 +12,9 @@ public class Customer extends Base {
     private String notes;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<Pet> pets;
+    private List<Pet> pets = new java.util.ArrayList<>();
 
+    //Getter and Setters for Customer
     public String getName() {
         return name;
     }

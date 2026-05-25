@@ -33,26 +33,19 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public List<Employee> findEmployeesForService(
-            Set<EmployeeSkill> skills,
-            DayOfWeek day
-    ) {
+    public List<Employee> findEmployeesForService(Set<EmployeeSkill> skills, DayOfWeek day) {
 
-        return employeeRepository.findAll()
-                .stream()
-                .filter(employee ->
-                        employee.getDaysAvailable().contains(day))
-                .filter(employee ->
-                        employee.getSkills().containsAll(skills))
+        return employeeRepository.findAll().stream()
+                .filter(employee -> employee.getDaysAvailable().contains(day))
+                .filter(employee -> employee.getSkills().containsAll(skills))
                 .toList();
     }
 
     public void setAvailability(Set<DayOfWeek> days, Long employeeId) {
 
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow();
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
 
-        employee.setDaysAvailable(days);
+        employee.setAvailable(days);
 
         employeeRepository.save(employee);
     }

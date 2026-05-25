@@ -10,13 +10,14 @@ import java.util.Set;
 @Entity
 public class Schedule extends Base {
 
+    // Rubric Required separate Join Tables
     @ManyToMany
     @JoinTable(
             name = "schedule_employee",
             joinColumns = @JoinColumn(name = "schedule_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
-    private List<Employee> employees;
+    private List<Employee> employees = new java.util.ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -24,7 +25,7 @@ public class Schedule extends Base {
             joinColumns = @JoinColumn(name = "schedule_id"),
             inverseJoinColumns = @JoinColumn(name = "pet_id")
     )
-    private List<Pet> pets;
+    private List<Pet> pets = new java.util.ArrayList<>();
 
     private LocalDate date;
 
@@ -32,6 +33,7 @@ public class Schedule extends Base {
     @Enumerated(EnumType.STRING)
     private Set<EmployeeSkill> activities;
 
+    //Getters and setters for Schedule
     public List<Employee> getEmployees() {
         return employees;
     }

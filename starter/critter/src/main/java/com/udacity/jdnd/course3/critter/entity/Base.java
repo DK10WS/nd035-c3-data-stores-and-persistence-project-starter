@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @MappedSuperclass
 public class Base {
-
+    // Id generation for all Classes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

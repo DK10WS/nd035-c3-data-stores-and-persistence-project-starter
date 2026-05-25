@@ -6,10 +6,12 @@ import com.udacity.jdnd.course3.critter.entity.Schedule;
 import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import com.udacity.jdnd.course3.critter.repository.ScheduleRepository;
+import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,9 +24,7 @@ public class ScheduleService {
     private final EmployeeRepository employeeRepository;
     private final PetRepository petRepository;
 
-    public ScheduleService(ScheduleRepository scheduleRepository,
-                           EmployeeRepository employeeRepository,
-                           PetRepository petRepository) {
+    public ScheduleService(ScheduleRepository scheduleRepository, EmployeeRepository employeeRepository, PetRepository petRepository) {
         this.scheduleRepository = scheduleRepository;
         this.employeeRepository = employeeRepository;
         this.petRepository = petRepository;
@@ -35,14 +35,18 @@ public class ScheduleService {
     }
 
     public List<Schedule> getSchedulesForEmployee(Long employeeId) {
+        List<Schedule> matchedSchedules = new ArrayList<>();
+        for (Schedule schedule : scheduleRepository.findAll()) {
+            for (Employee employee : schedule.getEmployees()) {
+                if (employee.getId().equals(employeeId)) {
+                    matchedSchedules.add(schedule);
+                    break;
+                }
+            }
+        }
 
-        return scheduleRepository.findAll()
-                .stream().filter(schedule ->
-                        schedule.getEmployees().stream().anyMatch(
-                                employee -> employee.getId().equals(employeeId)))
-                .toList();
+        return matchedSchedules;
     }
-
     public List<Schedule> getAllSchedules() {
         return scheduleRepository.findAll();
     }
@@ -55,17 +59,20 @@ public class ScheduleService {
         return pet.getSchedules();
     }
 
-    public List<Employee> findEmployeesForService(
-            Set<com.udacity.jdnd.course3.critter.user.EmployeeSkill> skills,
-            DayOfWeek day
-    ) {
+    public List<Employee> findEmployeesForService(Set<EmployeeSkill> skills, DayOfWeek day) {
 
-        return employeeRepository.findAll()
-                .stream()
-                .filter(employee ->
-                        employee.getDaysAvailable().contains(day))
-                .filter(employee ->
-                        employee.getSkills().containsAll(skills))
-                .collect(Collectors.toList());
-    }
-}
+        List<Employee> employees = employeeRepository.findAll();
+        List<Employee> matchedEmployees = new ArrayList<>();
+
+        for (Employee employee : employees) {
+
+            boolean available = employee.getDaysAvailable().contains(day);
+            boolean hasSkills = employee.getSkills().containsAll(skills);
+
+            if (available && hasSkills) {
+                matchedEmployees.add(employee);
+            }
+        }
+
+        return matchedEmployees;
+    }}

@@ -22,6 +22,7 @@ public class Employee extends Base {
     @Enumerated(EnumType.STRING)
     private Set<DayOfWeek> Available;
 
+    //Getters and setters for Employee
     public String getName() {
         return name;
     }
@@ -42,7 +43,7 @@ public class Employee extends Base {
         return Available;
     }
 
-    public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
+    public void setAvailable(Set<DayOfWeek> daysAvailable) {
         this.Available = daysAvailable;
     }
 }

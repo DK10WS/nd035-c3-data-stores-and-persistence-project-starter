@@ -21,6 +21,7 @@ public class Pet extends Base {
     @ManyToMany(mappedBy = "pets")
     private List<Schedule> schedules;
 
+    //Getters and setters for Pets
     public PetType getType() {
         return type;
     }
